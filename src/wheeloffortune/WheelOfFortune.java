@@ -3,8 +3,8 @@
 * Fall 2016
 * Instructor: Phil O'Connell
 * TODO: DON'T FORGET TO PUT YOUR NAME AND ID
-* Student: Stew Dent
-* ID: abc1234
+* Student: Yunnwei Swei
+* ID: yvs5276
 */
 package wheeloffortune;
 
