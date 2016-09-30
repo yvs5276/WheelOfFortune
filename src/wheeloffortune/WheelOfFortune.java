@@ -17,8 +17,10 @@ import java.util.Scanner;
 
 /**
  *
- * @author Phil O'Connell <pxo4@psu.edu>
+ * @author Yunnwei Swei <yvs5276@psu.edu>
  */
+
+
 public class WheelOfFortune {
 
   // To read from the keyboard
@@ -29,37 +31,41 @@ public class WheelOfFortune {
 
   // True if we want to show all letters
   private static boolean revealLetters = false;
+  
+  //Add money to the total
+  private static String totalMoney = "0";
 
   /*
   * These are the wedges that are part of the wheel.
   * There are 24.  Some values can appear more than once
   */
   private static final List<String> _wedges = Arrays.asList(
-      /* 01 */"$5000",
-      /* 02 */ "$600",
-      /* 03 */ "$500",
-      /* 04 */ "$300",
-      /* 05 */ "$500",
-      /* 06 */ "$800",
-      /* 07 */ "$550",
-      /* 08 */ "$400",
-      /* 09 */ "$300",
-      /* 10 */ "$900",
-      /* 11 */ "$500",
-      /* 12 */ "$300",
-      /* 13 */ "$900",
+      /* 01 */"5000",
+      /* 02 */ "600",
+      /* 03 */ "500",
+      /* 04 */ "300",
+      /* 05 */ "500",
+      /* 06 */ "800",
+      /* 07 */ "550",
+      /* 08 */ "400",
+      /* 09 */ "300",
+      /* 10 */ "900",
+      /* 11 */ "500",
+      /* 12 */ "300",
+      /* 13 */ "900",
       /* 14 */ "BANKRUPT",
-      /* 15 */ "$600",
-      /* 16 */ "$400",
-      /* 17 */ "$300",
+      /* 15 */ "600",
+      /* 16 */ "400",
+      /* 17 */ "300",
       /* 18 */ "LOSE A TURN",
-      /* 19 */ "$800",
-      /* 20 */ "$350",
-      /* 21 */ "$450",
-      /* 22 */ "$700",
-      /* 23 */ "$300",
-      /* 24 */ "$600"
+      /* 19 */ "800",
+      /* 20 */ "350",
+      /* 21 */ "450",
+      /* 22 */ "700",
+      /* 23 */ "300",
+      /* 24 */ "600"
   );
+ 
 
   /*
   * The number of wedges will not change throughout the game
@@ -83,9 +89,7 @@ public class WheelOfFortune {
       "4. Quit the game",
       "", // 5 possibly used in the future
       "", // 6 possibly used in the future
-      "", // 7 possibly used in the future
-      "8. Toggle puzzle reveal",
-      "9. Test letter input"
+      "" // 7 possibly used in the future
   );
   private static final int _quitChoiceNumber = 4;
 
@@ -252,18 +256,20 @@ public class WheelOfFortune {
 
         case 1: // Spin the wheel
           System.out.println("You landed on: " + chooseRandomWedgeValue());
+            if (chooseRandomWedgeValue().equals("BANKRUPT")){
+              totalMoney = "0";
+              System.out.println("Your Total is now $"+ totalMoney);
+          }
+            else{
+              totalMoney += chooseRandomWedgeValue();
+                System.out.println("You have " + totalMoney);
+          }
           char letter = inputLetter();
           System.out.println("Your letter is: " + letter);
           guessedLetters.put(letter, true);
           break;
 
-        case 8: // Toggle reveal letters
-          revealLetters = !revealLetters;
-          break;
-
-        case 9: // Test to read in a letter from the keyboard
-          System.out.println("Your letter is: " + inputLetter());
-          break;
+        
       }
     }
   }
