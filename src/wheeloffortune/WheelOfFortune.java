@@ -33,7 +33,7 @@ public class WheelOfFortune {
   private static boolean revealLetters = false;
   
   //Add money to the total
-  private static String totalMoney = "0";
+  private static int totalMoney = 0;
 
   /*
   * These are the wedges that are part of the wheel.
@@ -76,6 +76,21 @@ public class WheelOfFortune {
   private static String chooseRandomWedgeValue() {
     // Choose a random index
     int randomWedgeIndex = _random.nextInt(_wedgeCount);
+    
+    if (chooseRandomWedgeValue().equals("BANKRUPT")){
+              totalMoney = 0;
+              System.out.println("Your Total is now $"+ totalMoney);
+          }
+            else if(chooseRandomWedgeValue().equals("LSOE A TURN")){
+                System.out.println("You lose a turn");
+                System.out.println("You still have $"+totalMoney);
+            
+        }
+            else{
+                int wedgeValue = Integer.parseInt(_wedges.get(randomWedgeIndex));
+                totalMoney = totalMoney + wedgeValue;
+                System.out.println("You have $" + totalMoney);
+          }
 
     // Return the corresponding wedge
     return _wedges.get(randomWedgeIndex);
@@ -256,19 +271,20 @@ public class WheelOfFortune {
 
         case 1: // Spin the wheel
           System.out.println("You landed on: " + chooseRandomWedgeValue());
-            if (chooseRandomWedgeValue().equals("BANKRUPT")){
-              totalMoney = "0";
-              System.out.println("Your Total is now $"+ totalMoney);
-          }
-            else{
-              totalMoney += chooseRandomWedgeValue();
-                System.out.println("You have " + totalMoney);
-          }
           char letter = inputLetter();
           System.out.println("Your letter is: " + letter);
           guessedLetters.put(letter, true);
           break;
 
+//        case 2: //buy vowel
+//            if (totalMoney >= 250){
+//            System.out.println("Choose a vowel");
+//            char vowel = buyVowel();
+//            guessedLetters.put(vowel, true);
+//            } else {
+//                System.out.println("You can't afford that. You need $250");
+//            }
+//            break;
         
       }
     }
