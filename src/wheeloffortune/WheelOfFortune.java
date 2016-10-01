@@ -34,7 +34,47 @@ public class WheelOfFortune {
   
   //Add money to the total
   private static int totalMoney = 0;
+  
+  //Letter has been guessed
+  private static Map<Character, Boolean> lettersGuessed = new HashMap<>();
 
+  //vowel buying
+  private static char buyVowel() {
+       char vowel = ' ';
+       boolean finished = false;
+       
+       while (!finished) {
+       System.out.print("Enter a letter: ");
+ 
+       String line = _keyboard.nextLine();
+       if (line.length() != 1) {
+         System.out.println("Enter ONE letter");
+       } else {
+           
+         //Make it all caps
+         vowel = Character.toUpperCase(line.charAt(0));
+         if (!Character.isLetter(vowel)) {
+           System.out.println("That is not a letter");
+           
+         //Entered a vowel or not 
+         } else if (vowel != 'A' && vowel != 'E' && vowel != 'I' && vowel != 'O' && vowel != 'U') {
+             System.out.println("Enter a vowel");
+         }
+         //Check if user already guessed the letter  
+         else if (lettersGuessed.containsKey(vowel)){
+         System.out.println("You already guessed that letter\n");
+         } else
+         {
+             
+           // Exit the loop
+           finished = true;
+         }
+       }
+     }
+       //Charge player $250
+       totalMoney -= 250;
+       return vowel;
+ }
   /*
   * These are the wedges that are part of the wheel.
   * There are 24.  Some values can appear more than once
@@ -77,11 +117,11 @@ public class WheelOfFortune {
     // Choose a random index
     int randomWedgeIndex = _random.nextInt(_wedgeCount);
     
-    if (chooseRandomWedgeValue().equals("BANKRUPT")){
+    if (_wedges.get(randomWedgeIndex).equals("BANKRUPT")){
               totalMoney = 0;
               System.out.println("Your Total is now $"+ totalMoney);
           }
-            else if(chooseRandomWedgeValue().equals("LSOE A TURN")){
+            else if(_wedges.get(randomWedgeIndex).equals("LSOE A TURN")){
                 System.out.println("You lose a turn");
                 System.out.println("You still have $"+totalMoney);
             
@@ -89,22 +129,33 @@ public class WheelOfFortune {
             else{
                 int wedgeValue = Integer.parseInt(_wedges.get(randomWedgeIndex));
                 totalMoney = totalMoney + wedgeValue;
-                System.out.println("You have $" + totalMoney);
+                System.out.println("Total $" + totalMoney);
           }
 
     // Return the corresponding wedge
     return _wedges.get(randomWedgeIndex);
   }
+  
+  
+  //puzzel solving
+  private static void solvePuzzle(String puzzle) {
+       System.out.println("Enter solution");
+       String line = _keyboard.nextLine();
+       if(line.equalsIgnoreCase(puzzle)){
+           System.out.println("You Win!\nYour final totasl is:  $" + totalMoney);
+           System.exit(0);
+       } else {
+           System.out.println("Incorrect\nYou lose!");
+           System.exit(0);
+       }
+   }
 
   // The menu choices
   private static final List<String> _menuChoices = Arrays.asList(
       "1. Spin the wheel",
       "2. Buy a vowel",
       "3. Solve the puzzle",
-      "4. Quit the game",
-      "", // 5 possibly used in the future
-      "", // 6 possibly used in the future
-      "" // 7 possibly used in the future
+      "4. Quit the game"
   );
   private static final int _quitChoiceNumber = 4;
 
@@ -148,7 +199,7 @@ public class WheelOfFortune {
       * Either we're revealing all letters, or we've already guessed the
       * letter
       */
-      boolean isLetterGuessed = revealLetters || guessedLetters.containsKey(c);
+      boolean isLetterGuessed = revealLetters || lettersGuessed.containsKey(c);
 
       /*
       * If the letter is not blank (we don't mask blanks), and the letter
@@ -204,7 +255,14 @@ public class WheelOfFortune {
         letter = Character.toUpperCase(line.charAt(0));
         if (!Character.isLetter(letter)) {
           System.out.println("That is not a letter");
-        } else {
+        
+        } else if (letter == 'A' ||letter == 'E' ||letter == 'I' ||letter == 'O' ||letter == 'U'){
+          System.out.println("Purchace to enter vowel");
+      
+      } else if (lettersGuessed.containsKey(letter)){
+        System.out.println("You already have sguessed that letter\n");
+              
+        } else{
           // Will exit the loop
           finished = true;
         }
@@ -273,18 +331,22 @@ public class WheelOfFortune {
           System.out.println("You landed on: " + chooseRandomWedgeValue());
           char letter = inputLetter();
           System.out.println("Your letter is: " + letter);
-          guessedLetters.put(letter, true);
+          lettersGuessed.put(letter, true);
           break;
 
-//        case 2: //buy vowel
-//            if (totalMoney >= 250){
-//            System.out.println("Choose a vowel");
-//            char vowel = buyVowel();
-//            guessedLetters.put(vowel, true);
-//            } else {
-//                System.out.println("You can't afford that. You need $250");
-//            }
-//            break;
+        case 2: //buy vowel
+            if (totalMoney >= 250){
+            System.out.println("Choose a vowel");
+            char vowel = buyVowel();
+            lettersGuessed.put(vowel, true);
+            } else {
+                System.out.println("You need $250 to buy a vowel");
+            }
+            break;
+            
+        case 3: //solve puzzle
+            solvePuzzle(puzzle);
+            break;
         
       }
     }
