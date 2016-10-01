@@ -117,16 +117,18 @@ public class WheelOfFortune {
     // Choose a random index
     int randomWedgeIndex = _random.nextInt(_wedgeCount);
     
+    //Bankrupt? make it zero
     if (_wedges.get(randomWedgeIndex).equals("BANKRUPT")){
               totalMoney = 0;
               System.out.println("Your Total is now $"+ totalMoney);
           }
+    //Lose a turn? just print
             else if(_wedges.get(randomWedgeIndex).equals("LSOE A TURN")){
                 System.out.println("You lose a turn");
                 System.out.println("You still have $"+totalMoney);
             
         }
-            else{
+            else{//Other than that, add those money!!
                 int wedgeValue = Integer.parseInt(_wedges.get(randomWedgeIndex));
                 totalMoney = totalMoney + wedgeValue;
                 System.out.println("Total $" + totalMoney);
@@ -251,7 +253,7 @@ public class WheelOfFortune {
       if (line.length() != 1) {
         System.out.println("Enter just one letter");
       } else {
-        // Convert letter to upper case
+        // make it all upper case
         letter = Character.toUpperCase(line.charAt(0));
         if (!Character.isLetter(letter)) {
           System.out.println("That is not a letter");
